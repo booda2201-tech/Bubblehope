@@ -1,0 +1,142 @@
+<!-- <div class="shopping-list-container">
+  <div *ngIf="(items$ | async)?.length === 0; else cartContent" class="empty-cart text-center">
+    <h2 class="text-center main-color mb-4">لا توجد منتجات في السلة. الرجاء إضافة بعض المنتجات للمتابعة.</h2>
+  <button routerLink="/products" class="btn text-center my-5 w-20 total fs-4">منتجاتنا </button>
+
+  </div>
+
+  <ng-template #cartContent>
+    <h2 class="text-center main-color mb-4">
+      السله تحتوي علي ({{ (items$ | async)?.length || 0 }} منتج)
+    </h2>
+
+    <div class="list-header fw-bold fs-5">
+      <p>المنتج</p>
+      <p>السعر</p>
+      <p>الكمية</p>
+      <p>الإجمالي</p>
+    </div>
+
+    <div *ngFor="let item of (items$ | async)" class="list-item">
+      <span class="item-name">{{ item.name }}</span>
+      <span class="item-price">{{ item.price | currency:'EGP ':'symbol':'1.0-0' }}</span>
+      <div class="item-quantity-control">
+        <input
+        type="number"
+        [(ngModel)]="item.quantity"
+        min="1"
+        (ngModelChange)="calculateTotals(item)"
+        >
+      </div>
+      <span class="item-total">{{ item.total | currency:'EGP ':'symbol':'1.0-0' }}</span>
+      <i class="fa-solid fa-trash-can" (click)="removeItem(item)"></i>
+    </div>
+
+    <div class="ms-auto checkout p-2">
+      <div class="d-flex justify-content-between align-items-center border-bottom py-3">
+        <span class="fs-2 total">
+          <span>{{ overallTotal$ | async | currency: 'EGP ':'symbol':'1.0-0' }}</span>
+        </span>
+        <span class="fs-2 total">: إجمالي المبلغ</span>
+      </div>
+      <button routerLink="/order-confirmation" class="btn text-center my-5 w-20 total fs-4"> إتمام الشراء </button>
+    </div>
+  </ng-template>
+</div> -->
+
+
+<div class="shopping-list-container px-md-4 px-2">
+  <h2 class="text-center m-0 py-4">Your Cart ({{ (items$ | async)?.length }} Item)</h2>
+
+  <div class="cart-header text-orange fw-bold fs-5">
+    <div class="text-start ps-5">Item</div>
+    <div>Price</div>
+    <div>Quantity</div>
+    <div>Total</div>
+  </div>
+  <div class="scroll">
+  <div class="text-orange d-md-block d-none">
+    <div *ngFor="let item of (items$ | async)" class="cart-item py-3">
+      <div class="d-flex align-items-center text-start">
+        <img [src]="item.image"
+              [alt]="item.name"
+              class="product-img me-3"
+              >
+        <div class="product-info">
+          <span class="fs-5 fw-bold text-dark d-block">{{ item.name }}
+            <p class="text-secondary fs-6 fw-normal mb-0">
+            {{ item.sugarLevel }}, {{ item.iceLevel }}
+            </p>
+          </span>
+        </div>
+      </div>
+      <div class="fs-5 text-dark">
+        {{ item.price | number:'1.0-0' }} LE
+      </div>
+      <div class="quantity-control d-flex align-items-center justify-content-center gap-3">
+        <button (click)="decrementQuantity(item)" class="btn text-orange fs-4 p-0">-</button>
+        <span class="fs-4 text-dark fw-bold">{{ item.quantity }}</span>
+        <button (click)="incrementQuantity(item)" class="btn text-orange fs-4 p-0">+</button>
+      </div>
+      <div class="totle-price d-flex align-items-center justify-content-center gap-3">
+        <span class="fs-4 total text-dark fw-bold">
+          {{ (item.price * item.quantity) | number:'1.0-0' }} LE
+        </span>
+        <span class="remove-btn" (click)="removeItem(item)" style="cursor: pointer;">
+          <i class="fa-solid fa-circle-xmark text-orange fs-4"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+  </div>
+
+<div class="texet-orange d-block d-md-none">
+  <div class="row cart-item-sm py-2 ng-star-inserted" *ngFor="let item of (items$ | async)">
+    <div class="col-4 d-flex justify-content-center align-items-center">
+      <img class="product-img px-1 w-100"
+            [src]="item.image"
+            [alt]="item.name">
+    </div>
+    <div class="col-8 d-flex flex-column justify-content-between">
+      <div class="d-flex justify-content-between align-items-start">
+        <div class="product-name fs-5 mt-2 fw-normal">
+          <span >{{ item.name }}</span>
+          <p class="text-secondary fs-6 fw-normal"> {{ item.sugarLevel }}, {{ item.iceLevel }}</p>
+        </div>
+        <span class="remove-btn" (click)="removeItem(item)" style="cursor: pointer;">
+          <i class="fa-solid fa-circle-xmark text-orange fs-4"></i>
+        </span>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center">
+      <div class="quantity-control">
+        <button (click)="decrementQuantity(item)" class="btn text-orange fs-4 p-0">-</button>
+        <span class="fs-4 text-dark fw-bold">{{ item.quantity }}</span>
+        <button (click)="incrementQuantity(item)" class="btn text-orange fs-4 p-0">+</button>
+      </div>
+      <div class="fs-5 text-dark">
+        {{ item.price | number:'1.0-0' }} LE
+      </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="ms-auto checkout p-2 mt-4" style="max-width: 400px;">
+    <div class="d-flex justify-content-between align-items-center border-bottom py-3">
+      <span class="fs-3 total text-dark">Total: </span>
+      <span class="fs-3 total text-dark fw-bold">
+        {{ overallTotal$ | async | number:'1.1-1' }} <span>LE</span>
+      </span>
+    </div>
+    <button class="btn my-3 checkout-btn w-100 py-2 text-white fs-5"
+        style="background-color:
+          #ff702c; border-radius: 8px;"
+          routerLink="/confirm-order">
+      Check out
+    </button>
+  </div>
+  </div>
+
+
+

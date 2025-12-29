@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+
+  /* background-image:url(../../assets/imeges/1.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #f4e6d5;
+  max-width: 1950px;
+  margin: auto;
+  font-family: Arial, sans-serif; */
+
+
+  background-image: url(./assets/imeges/1.png);
+  background-color: #f4e6d5;
+  background-blend-mode: multiply;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  max-width: 1950px;
+  height: 200vh;
+  margin: auto;
+  font-family: Arial, sans-serif;
+
+}

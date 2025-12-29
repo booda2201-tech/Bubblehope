@@ -1,0 +1,38 @@
+<div class="container-fluid py-4 px-4">
+<div class="d-flex gap-2 mb-4 overflow-auto">
+  <button
+    *ngFor="let cat of categories"
+    (click)="selectCategory(cat)"
+    [ngClass]="{ active: selectedCategory === cat }"
+    class="btn-outline-orange rounded-3">
+    {{ cat }}
+  </button>
+</div>
+
+<div class="row g-4 mb-5">
+  <div class="col-6 col-sm-6 col-md-4 col-lg-3 px-2 mb-3" *ngFor="let productlist of products">
+    <div [routerLink]="['/product-details', productlist.id]"
+          [queryParams]="{ category: selectedCategory }"
+        class="card bg-white p-2 h-100 d-flex flex-column justify-content-between shadow-sm rounded-4">
+      <div class="text-center card-img">
+          <img [src]="productlist.img" class="card-img-top mx-auto w-50" alt="">
+      </div>
+        <h6 class="card-title fs-6 mt-2 mb-0 text-center">{{ productlist.nameEn }}</h6>
+        <div class="d-flex justify-content-around align-items-center mb-2 border-top pt-3">
+          <div class=" text-center">
+            <p class="card-text text-dark fw-bold">{{ productlist.price }} LE</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 text-center" *ngIf="products.length === 0 && message">
+      <div class="text-muted">
+            {{ message }}
+  </div>
+  </div>
+</div>
+</div>
+
+
+

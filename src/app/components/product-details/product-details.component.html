@@ -1,0 +1,171 @@
+
+<!-- <div class="cont px-3">
+<div class="card-container">
+  <div class="image-section">
+    <div class="diagonal-bg"></div>
+    <img src="./../../../assets/imeges/frappa.png" class="product-img">
+  </div>
+
+  <div class="details-section">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="title">Mango Colada Boba</h2>
+        <div class="price2 d-block d-md-none text-end">{{ totalPrice }} <span>LE</span></div>
+      </div>
+      <div>
+        <h3>Our Signature</h3>
+        <p class="description">Mango and coconut cream with boba.</p>
+      </div>
+    <div class="scroll">
+      <div>
+    <div class="option-group">
+      <h4>Extras</h4>
+      <div class="chips">
+        <button
+          *ngFor="let extra of extras; let i = index"
+          class="chip"
+          [class.active]="extra.selected"
+          (click)="toggleExtra(i)">
+          {{ extra.name }} <span>({{ extra.price }})</span>
+        </button>
+      </div>
+    </div>
+    <div class="option-group">
+      <h4>Sugar Level <span class="required">*</span></h4>
+      <div class="chips">
+        <button
+          *ngFor="let level of sugarLevels"
+          class="chip"
+          [class.active]="selectedSugar === level"
+          (click)="selectSugar(level)">
+          {{ level }} (0)
+        </button>
+      </div>
+    </div>
+    <div class="option-group">
+  <h4>Ice Level <span class="required">*</span></h4>
+  <div class="chips">
+    <button
+      *ngFor="let level of iceLevels"
+      class="chip"
+      [class.active]="selectedIce === level"
+      (click)="selectIce(level)">
+      {{ level }} (0)
+    </button>
+  </div>
+    </div>
+    <div class="option-group">
+  <h4>Ice Level <span class="required">*</span></h4>
+  <div class="chips">
+    <button
+      *ngFor="let level of iceLevels"
+      class="chip"
+      [class.active]="selectedIce === level"
+      (click)="selectIce(level)">
+      {{ level }} (0)
+    </button>
+  </div>
+    </div>
+    <div class="option-group">
+  <h4>Ice Level <span class="required">*</span></h4>
+  <div class="chips">
+    <button
+      *ngFor="let level of iceLevels"
+      class="chip"
+      [class.active]="selectedIce === level"
+      (click)="selectIce(level)">
+      {{ level }} (0)
+    </button>
+  </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+      <div class="price">{{ totalPrice }} <span>LE</span></div>
+      <button class="add-btn">Add To Cart</button>
+    </div>
+  </div>
+</div>
+</div> -->
+
+<div class="cont px-3" *ngIf="product">
+  <div class="card-container">
+    <div class="image-section">
+      <div class="diagonal-bg"></div>
+      <img [src]="product.img" class="product-img" [alt]="product.nameEn">
+    </div>
+
+    <div class="details-section">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="title">{{ product.nameEn }}</h2>
+        <div class="price2 d-block d-md-none text-end">{{ totalPrice }} <span>LE</span></div>
+      </div>
+      <div>
+        <h3>{{ categoryName }}</h3>
+        <p class="description">Premium beverage prepared with our special recipe.</p>
+      </div>
+
+      <div class="scroll">
+        <div>
+          <div class="option-group">
+            <h4>Extras</h4>
+            <div class="chips">
+              <button
+                *ngFor="let extra of extras; let i = index"
+                class="chip"
+                [class.active]="extra.selected"
+                (click)="toggleExtra(i)">
+                {{ extra.name }} <span>({{ extra.price }})</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <h4>Sugar Level <span class="required">*</span></h4>
+            <div class="chips">
+              <button
+                *ngFor="let level of sugarLevels"
+                class="chip"
+                [class.active]="selectedSugar === level"
+                (click)="selectSugar(level)">
+                {{ level }} (0)
+              </button>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <h4>Ice Level <span class="required">*</span></h4>
+            <div class="chips">
+              <button
+                *ngFor="let level of iceLevels"
+                class="chip"
+                [class.active]="selectedIce === level"
+                (click)="selectIce(level)">
+                {{ level }} (0)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="price">{{ totalPrice }} <span>LE</span></div>
+          <!-- <div *ngIf="showNotification" class="notification-box added-success">
+              <p>{{ notificationMessage }}</p>
+          </div> -->
+      <div *ngIf="showNotification" class="notification"
+          [ngClass]="{
+        'error-bg': isError,
+        'success-bg': !isError,
+        'shake-animation': isError}">
+        {{ notificationMessage }}
+        </div>
+        <button class="add-btn" (click)="addToCart()">Add To Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+<div *ngIf="!product" class="text-center py-5">
+  <p>Loading product details...</p>
+</div> -->
