@@ -14,6 +14,7 @@ export class ProductDetailsComponent implements OnInit {
   categoryName: string = '';
   basePrice: number = 0;
   totalPrice: number = 0;
+  mainprice: number = 0;
 
 
   notificationMessage: string = '';
@@ -51,6 +52,7 @@ export class ProductDetailsComponent implements OnInit {
     if (this.product) {
       this.basePrice = this.product.price;
       this.totalPrice = this.product.price;
+      this.mainprice = this.product.price;
     }
     else {
       console.error('Product not found !');
@@ -114,7 +116,7 @@ addToCart(): void {
   this.cartService.addToCart(itemToAdd);
 
   this.notificationMessage = 'Product added to cart successfully ✅';
-  this.isError = false; 
+  this.isError = false;
   this.showNotification = true;
 
   setTimeout(() => { this.showNotification = false; }, 1200);

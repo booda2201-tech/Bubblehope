@@ -33,19 +33,16 @@
   </form> -->
 
   <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" novalidate>
-
   <div class="mb-3">
     <label class="form-label fw-normal"> Full Name <span class="text-danger">*</span></label>
     <input formControlName="fullName" class="form-control">
   </div>
-
   <div class="mb-3">
     <label class="form-label fw-normal"> Payment Method <span class="text-danger">*</span></label>
     <select formControlName="paymentMethodId" class="form-control">
       <option value="0: 1"> Cash On Delivery </option>
     </select>
   </div>
-
   <div class="mb-3">
     <label class="form-label fw-normal"> Discount Code </label>
     <input formControlName="code" class="form-control" placeholder="Optional">
@@ -57,8 +54,6 @@
     Confirm
   </button>
 </form>
-
-
 </div>
 
 <!-- <div class="col-md-4">

@@ -6,6 +6,9 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ProductService {
 
+  lastSelectedCategory: string = '';
+  lastFilteredProducts: any[] = [];
+
 private selectedCategorySource = new BehaviorSubject<string>('');
   private filteredProductsSource = new BehaviorSubject<any[]>([]);
 
@@ -17,8 +20,16 @@ updateState(category: string, products: any[]) {
     this.filteredProductsSource.next(products);
   }
 
+private searchSubject = new BehaviorSubject<string>('');
+searchTerm$ = this.searchSubject.asObservable();
 
-  private ProductList = [
+updateSearchTerm(term: string) {
+  this.searchSubject.next(term);
+}
+
+
+
+  public ProductList = [
     {
       id: 1,
       categoryNameEn: 'Our Signature',
@@ -82,10 +93,10 @@ updateState(category: string, products: any[]) {
       categoryNameEn: 'Milk Tea',
       categoryNameAr:'الشاي المحلي',
       products: [
-        { id: 1, nameEn: 'Iced Coffee',nameAr:'قهوه محلي',img:"./../../assets/imeges/Menu6/mmys3sbhrqcwaik1jutd.png" ,price: 150 },
-        { id: 2, nameEn: 'Hot Coffee',nameAr:'قهوه ساخن',img:"./../../assets/imeges/Menu6/pgwglxyij3zmptr8nqkr.png" ,price: 90 },
-        { id: 3, nameEn: 'Ice Tea',nameAr:'شاي محلي',img:"./../../assets/imeges/Menu6/rckqvsrklmte9sidyqhi.png" ,price: 140 },
-        { id: 4, nameEn: 'Ice Tea',nameAr:'شاي محلي',img:"./../../assets/imeges/Menu6/wbgqa3u5pikngkn7kcy6.png" ,price: 150 },
+        { id: 1, nameEn: 'Brown Sugar Milk Tea Boba',nameAr:'قهوه محلي',img:"./../../assets/imeges/Menu6/mmys3sbhrqcwaik1jutd.png" ,price: 150 },
+        { id: 2, nameEn: 'Taro Milk Tea',nameAr:'قهوه ساخن',img:"./../../assets/imeges/Menu6/pgwglxyij3zmptr8nqkr.png" ,price: 90 },
+        { id: 3, nameEn: 'Thai Milk Tea',nameAr:'شاي محلي',img:"./../../assets/imeges/Menu6/rckqvsrklmte9sidyqhi.png" ,price: 140 },
+        { id: 4, nameEn: 'Strawberry Latte Boba',nameAr:'شاي محلي',img:"./../../assets/imeges/Menu6/wbgqa3u5pikngkn7kcy6.png" ,price: 150 },
       ],
     },
         {
@@ -93,12 +104,12 @@ updateState(category: string, products: any[]) {
       categoryNameEn: 'Iced Coffee',
       categoryNameAr:'المشاي',
       products: [
-        { id: 1, nameEn: 'Iced Coffee',nameAr:'قهوه محلي',img:"./../../assets/imeges/Menu7/krrguvf2mp6mxenrfzzr.png" ,price: 150 },
-        { id: 2, nameEn: 'Hot Coffee',nameAr:'قهوه ساخن',img:"./../../assets/imeges/Menu7/p6ic2b31uvhdzxxp86cv.png" ,price: 120 },
-        { id: 3, nameEn: 'Ice Tea',nameAr:'شاي محلي',img:"./../../assets/imeges/Menu7/ril1yiteyfhiyqgvdbcp.png" ,price: 90 },
-        { id: 4, nameEn: 'Ice Tea',nameAr:'شاي محلي',img:"./../../assets/imeges/Menu7/ubp3tgh8nc5ij52ryp4c.png" ,price: 190 },
-        { id: 5, nameEn: 'Ice Tea',nameAr:'شاي محلي',img:"./../../assets/imeges/Menu7/ustdzzlx6oo4zpywnm2i.png" ,price: 150 },
-        { id: 6, nameEn: 'Ice Tea',nameAr:'شاي محلي',img:"./../../assets/imeges/Menu7/xjzclpxtugy5un31ubit.png" ,price: 250 },
+        { id: 1, nameEn: 'Iced café latte',nameAr:'قهوه محلي',img:"./../../assets/imeges/Menu7/krrguvf2mp6mxenrfzzr.png" ,price: 150 },
+        { id: 2, nameEn: 'Iced Salted Caremel Latte',nameAr:'قهوه ساخن',img:"./../../assets/imeges/Menu7/p6ic2b31uvhdzxxp86cv.png" ,price: 120 },
+        { id: 3, nameEn: 'Iced Mocha',nameAr:'شاي محلي',img:"./../../assets/imeges/Menu7/ril1yiteyfhiyqgvdbcp.png" ,price: 90 },
+        { id: 4, nameEn: 'Iced White Mocha',nameAr:'شاي محلي',img:"./../../assets/imeges/Menu7/ubp3tgh8nc5ij52ryp4c.png" ,price: 190 },
+        { id: 5, nameEn: 'Iced Spanish Latte',nameAr:'شاي محلي',img:"./../../assets/imeges/Menu7/ustdzzlx6oo4zpywnm2i.png" ,price: 150 },
+        { id: 6, nameEn: 'Iced Coffee',nameAr:'شاي محلي',img:"./../../assets/imeges/Menu7/xjzclpxtugy5un31ubit.png" ,price: 250 },
       ],
     },
         {
@@ -106,12 +117,12 @@ updateState(category: string, products: any[]) {
       categoryNameEn: 'Hot Coffee',
       categoryNameAr:'توقيعنا',
       products: [
-        { id: 1, nameEn: 'Iced Coffee',nameAr:'قهوه محلي', img:"./../../assets/imeges/Menu8/nni1gzbzqhsdwnovalhg.png",price: 150 },
-        { id: 2, nameEn: 'Ice Tea', nameAr:'شاي محلي', img:"./../../assets/imeges/Menu8/oju8ewx1autp3v2t1x1h.png",price: 200 },
-        { id: 3, nameEn: 'Ice Tea', nameAr:'شاي محلي', img:"./../../assets/imeges/Menu8/p0ujo60gqlv9tdu6msvy.png",price: 90 },
-        { id: 4, nameEn: 'Ice Tea', nameAr:'شاي محلي', img:"./../../assets/imeges/Menu8/urks6zqq4k4oo9jqftax.png",price: 150 },
-        { id: 5, nameEn: 'Ice Tea', nameAr:'شاي محلي', img:"./../../assets/imeges/Menu8/vmp2vxuqbeh9c66yiakz.png",price: 120 },
-        { id: 6, nameEn: 'Ice Tea', nameAr:'شاي محلي', img:"./../../assets/imeges/Menu8/vnuoc5hypkeav8qwo43r.png",price: 120 },
+        { id: 1, nameEn: 'White Mocha',nameAr:'قهوه محلي', img:"./../../assets/imeges/Menu8/nni1gzbzqhsdwnovalhg.png",price: 150 },
+        { id: 2, nameEn: 'Café latte', nameAr:'شاي محلي', img:"./../../assets/imeges/Menu8/oju8ewx1autp3v2t1x1h.png",price: 200 },
+        { id: 3, nameEn: 'Cappuccino', nameAr:'شاي محلي', img:"./../../assets/imeges/Menu8/p0ujo60gqlv9tdu6msvy.png",price: 90 },
+        { id: 4, nameEn: 'Salted Caremel Latte', nameAr:'شاي محلي', img:"./../../assets/imeges/Menu8/urks6zqq4k4oo9jqftax.png",price: 150 },
+        { id: 5, nameEn: 'Americano', nameAr:'شاي محلي', img:"./../../assets/imeges/Menu8/vmp2vxuqbeh9c66yiakz.png",price: 120 },
+        { id: 6, nameEn: 'Mocha', nameAr:'شاي محلي', img:"./../../assets/imeges/Menu8/vnuoc5hypkeav8qwo43r.png",price: 120 },
       ],
     },
         {
@@ -143,8 +154,6 @@ updateState(category: string, products: any[]) {
     },
   ];
 
-
-
   getCategories() {
     return this.ProductList.map(cat => cat.categoryNameEn );
   }
@@ -159,11 +168,8 @@ getProduct(categoryName: string, productId: number) {
     return null;
   }
 
-
-
   return category.products.find(p => p.id == productId) || null;
 }
-
 
   getProductsByCategory(categoryName: string) {
     return this.ProductList.find(c => c.categoryNameEn === categoryName)?.products || [];
