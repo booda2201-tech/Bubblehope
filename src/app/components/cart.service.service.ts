@@ -92,4 +92,11 @@ get overallTotal$(): Observable<number> {
 }
 
 
+private searchSubject = new BehaviorSubject<string>('');
+searchTerm$ = this.searchSubject.asObservable();
+
+updateSearchTerm(term: string) {
+  this.searchSubject.next(term);
+}
+
 }

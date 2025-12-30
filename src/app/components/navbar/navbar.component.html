@@ -27,9 +27,11 @@
   <div class="search-wrapper search d-none d-md-block p-0 m-0">
     <div class="input-group rounded-0 w-100 border-0">
 
-      <input type="text" name="search"
+      <input type="text"
+          (input)="onSearch($event)"
+          #searchInput
         class="form-control border-0 bg-light rounded-4 ng-untouched ng-pristine ng-valid"
-        placeholder="search ..." style="text-align: left;">
+        placeholder="search ...">
 </div>
 </div>
   <div class="d-flex align-items-center gap-md-3 gap-1 p-0 m-0">

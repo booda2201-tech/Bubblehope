@@ -1,9 +1,22 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
+
+private selectedCategorySource = new BehaviorSubject<string>('');
+  private filteredProductsSource = new BehaviorSubject<any[]>([]);
+
+  currentCategory$ = this.selectedCategorySource.asObservable();
+  currentProducts$ = this.filteredProductsSource.asObservable();
+
+updateState(category: string, products: any[]) {
+    this.selectedCategorySource.next(category);
+    this.filteredProductsSource.next(products);
+  }
+
 
   private ProductList = [
     {
@@ -155,4 +168,8 @@ getProduct(categoryName: string, productId: number) {
   getProductsByCategory(categoryName: string) {
     return this.ProductList.find(c => c.categoryNameEn === categoryName)?.products || [];
   }
+
+
+
+
 }
