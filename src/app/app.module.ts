@@ -14,6 +14,7 @@ import { MainComponent } from './components/layout/main/main.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { CartComponent } from './components/cart/cart.component';
 import { ConfirmorderComponent } from './confirm-order/confirmorder.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -34,7 +35,8 @@ import { ConfirmorderComponent } from './confirm-order/confirmorder.component';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

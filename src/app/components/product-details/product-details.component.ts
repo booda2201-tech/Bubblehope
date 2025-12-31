@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '.././../services/product.service';
 import { CartItem } from '../cart/cart-item.modeel';
 import { CartServiceService } from '../cart.service.service';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-product-details',
@@ -12,9 +13,8 @@ import { CartServiceService } from '../cart.service.service';
 export class ProductDetailsComponent implements OnInit {
   product: any;
   categoryName: string = '';
-  basePrice: number = 0;
-  totalPrice: number = 0;
-  mainprice: number = 0;
+  newPrice: number = 0;
+  oldPrice: number = 0;
 
 
   notificationMessage: string = '';
@@ -39,25 +39,42 @@ export class ProductDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private cartService: CartServiceService
+    private cartService: CartServiceService,
+    private apiService: ApiService
   ) {}
 
   ngOnInit() {
     const productId = +this.route.snapshot.paramMap.get('id')!;
-    const categoryName = this.route.snapshot.queryParamMap.get('category')!;
+    // const categoryName = this.route.snapshot.queryParamMap.get('category')!;
 
-    this.categoryName = categoryName;
+    // this.categoryName = categoryName;
 
-    this.product = this.productService.getProduct(this.categoryName, productId);
+    // this.product = this.productService.getProduct(this.categoryName, productId);
+
+    this.getProductById(productId);
 
     if (this.product) {
-      this.basePrice = this.product.price;
-      this.totalPrice = this.product.price;
-      this.mainprice = this.product.price;
+      this.newPrice = this.product.price;
+      this.oldPrice = this.product.oldPrice;
     }
     else {
       console.error('Product not found !');
     }
+
+  }
+
+  getProductById(id:number){
+    this.apiService.GetProductById(id, 2).subscribe({
+      next: (res: any) => {
+        console.log(res);
+
+        this.product = res;
+
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    })
   }
 
   selectIce(level: string) {
@@ -78,7 +95,7 @@ export class ProductDetailsComponent implements OnInit {
       .filter(e => e.selected)
       .reduce((sum, current) => sum + current.price, 0);
 
-    this.totalPrice = this.basePrice + extrasCost;
+    this.newPrice = this.oldPrice + extrasCost;
   }
 
   isError: boolean = false;
@@ -105,9 +122,9 @@ addToCart(): void {
   const itemToAdd: CartItem = {
     id: this.product.id,
     name: this.product.nameEn,
-    price: this.basePrice,
+    price: this.oldPrice,
     quantity: 1,
-    total: this.totalPrice,
+    total: this.newPrice,
     image: this.product.img,
     extras: selectedExtras,
     sugarLevel: this.selectedSugar,

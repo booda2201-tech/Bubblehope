@@ -92,17 +92,17 @@
   <div class="card-container">
     <div class="image-section">
       <div class="diagonal-bg"></div>
-      <img [src]="product.img" class="product-img" [alt]="product.nameEn">
+      <img [src]="product.images" class="product-img" [alt]="product.nameEn">
     </div>
 
     <div class="details-section">
       <div class="d-flex justify-content-between align-items-center">
-        <h2 class="title">{{ product.nameEn }}</h2>
-        <div class="price2 d-block d-md-none text-end">{{ mainprice }} <span>LE</span></div>
+        <h2 class="title">{{ product.name }}</h2>
+        <div class="price2 d-block d-md-none text-end">{{ product.oldPrice }} <span>LE</span></div>
       </div>
       <div>
-        <h3>{{ categoryName }}</h3>
-        <p class="description">Premium beverage prepared with our special recipe.</p>
+        <h3>{{ product.category.name }}</h3>
+        <p class="description">{{ product.ingredients }}</p>
       </div>
       <div class="scroll">
         <div>
@@ -147,7 +147,7 @@
       </div>
 
       <div class="footer">
-        <div class="price">{{ totalPrice }} <span>LE</span></div>
+        <div class="price">{{ product.newPrice }} <span>LE</span></div>
           <!-- <div *ngIf="showNotification" class="notification-box added-success">
               <p>{{ notificationMessage }}</p>
           </div> -->
