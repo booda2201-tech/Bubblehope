@@ -34,6 +34,7 @@ export class ProductDetailsComponent implements OnInit {
 
   selectedSugar = '';
   selectedIce = '';
+  clicked = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -83,6 +84,7 @@ export class ProductDetailsComponent implements OnInit {
   isError: boolean = false;
 
 addToCart(): void {
+  this.clicked = true;
   if (!this.product) return;
 
 

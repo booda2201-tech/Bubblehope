@@ -119,7 +119,7 @@
             </div>
           </div>
           <div class="option-group">
-            <h4>Sugar Level <span class="required">*</span></h4>
+            <h4 [class.error]="!selectedSugar && clicked">Sugar Level <span class="required">*</span></h4>
             <div class="chips">
               <button
                 *ngFor="let level of sugarLevels"
@@ -132,7 +132,7 @@
           </div>
 
           <div class="option-group">
-            <h4>Ice Level <span class="required">*</span></h4>
+            <h4 [class.error]="!selectedIce && clicked">Ice Level <span class="required">*</span></h4>
             <div class="chips">
               <button
                 *ngFor="let level of iceLevels"

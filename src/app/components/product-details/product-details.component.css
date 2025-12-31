@@ -54,6 +54,9 @@ h3{
   opacity: 0.9
 }
 
+.error{
+  color: red;
+}
 
 h4{
   margin-top: 20px;
