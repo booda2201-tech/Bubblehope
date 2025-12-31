@@ -107,18 +107,56 @@
       <div class="scroll">
         <div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <div class="option-group" *ngFor="let group of product.groups">
             <h4>{{group.name}}</h4>
             <div class="chips">
-              <button
-                *ngFor=" let ootions of product.groups[0].options"
+              <button *ngFor=" let option of group.options"
                 class="chip"
-                [class.active]="groups.selected"
-                (click)="toggleExtra(groups)">
-                {{ groups.name }} <span>({{ groups.price }})</span>
+                [class.active]="option"
+                (click)="toggleExtra(option)">
+                {{ option.name }} <span>({{ option.price }})</span>
               </button>
             </div>
           </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
