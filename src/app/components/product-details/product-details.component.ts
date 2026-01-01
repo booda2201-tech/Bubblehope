@@ -26,9 +26,6 @@ export interface CartItem {
 })
 
 
-
-
-
 export class ProductDetailsComponent implements OnInit {
   product: any;
   selectedOptions: { [key: string]: any } = {};
@@ -67,25 +64,27 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   toggleExtra(groupName: string, option: any) {
-    if (this.selectedOptions[groupName]?.name === option.name) {
-      delete this.selectedOptions[groupName];
-    } else {
-      this.selectedOptions[groupName] = option;
-    }
+  if (this.selectedOptions[groupName]?.id === option.id) {
+
+  } else {
+    this.selectedOptions[groupName] = option;
+  }
     this.calculateTotal();
   }
 
-  calculateTotal() {
-    const extrasCost = Object.values(this.selectedOptions).reduce((sum: number, opt: any) => {
-      return sum + (opt.price || 0);
-    }, 0);
+calculateTotal() {
+  const extrasCost = Object.values(this.selectedOptions).reduce((sum: number, opt: any) => {
+    return sum + (opt.price || 0);
+  }, 0);
 
-    this.newPrice = this.oldPrice + extrasCost;
-  }
+  this.product.price = this.oldPrice;
+  this.newPrice = this.oldPrice + extrasCost;
+}
 
   addToCart(): void {
     this.clicked = true;
     if (!this.product) return;
+
 
     const totalGroups = this.product.groups?.length || 0;
     const selectedGroupsCount = Object.keys(this.selectedOptions).length;
