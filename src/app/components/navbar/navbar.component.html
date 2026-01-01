@@ -92,15 +92,15 @@
     </div>
   </div>
 <ul class="list-unstyled px-3 mt-3">
-  <li class="mb-2 sidebar-item fs-5" style="cursor: pointer" (click)="toggleBranches()">
-    <i class="bi bi-pin-map me-2"></i>
-    Branches
-    <i class="bi float-end bi-chevron-left" [class.rotate-90]="isBranchesOpen"></i>
-  </li>
+<li class="mb-2 sidebar-item fs-5" style="cursor: pointer" (click)="toggleBranches()">
+  <i class="bi bi-pin-map me-2"></i>
+  Branches
+  <i class="bi float-end bi-chevron-left arrow-icon" [class.open]="isBranchesOpen"></i>
+</li>
 
   <ul class="list-unstyled ps-4" *ngIf="isBranchesOpen">
     <li *ngFor="let branch of branches"
-        class="fs-6 fw-normal category-name click mb-1"
+        class="fs-6 fw-normal category-name mb-1"
         [class.active-branch]="selectedBranchId === branch.id"
         (click)="onBranchSelect(branch)">
       <i class="bi bi-geo-alt-fill me-1"></i>

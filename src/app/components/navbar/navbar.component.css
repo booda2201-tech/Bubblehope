@@ -129,6 +129,15 @@ li.sidebar-item {
 }
 
 
+.arrow-icon {
+  transition: transform 0.2s ease-in-out;
+  display: inline-block;
+}
+
+.arrow-icon.open {
+  transform: rotate(-90deg);
+}
+
 .category-name {
   padding: 10px 15px;
   cursor: pointer;
