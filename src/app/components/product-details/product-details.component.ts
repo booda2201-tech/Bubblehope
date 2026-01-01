@@ -127,7 +127,7 @@ export class ProductDetailsComponent implements OnInit {
 
     if (missingRequiredGroups.length > 0) {
       this.showFeedback(
-        `Required: Please select ${missingRequiredGroups[0].name} ⚠️`,
+        `Required: Please select missing required additions ⚠️`,
         true
       );
       return;

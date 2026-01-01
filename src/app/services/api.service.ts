@@ -14,8 +14,7 @@ export class ApiService {
   constructor(private http:HttpClient) { }
 
   getAllProductsByBranchAndCtegory(categoryId:number,branchId:number):Observable<any>{
-    return this.http.get(`${this.baseUrl}Products/GetProductsByCategoryId/${categoryId}/branch/${branchId}`)
-    // return this.http.get(`https://alhendalcompany-001-site1.stempurl.com/api/Products/GetProductsByCategoryId/1/branch/2`)
+    return this.http.get(`${this.baseUrl}Stock/GetProducts?branchId=${branchId}&categoryId=${categoryId}`)
   }
 
   getAllCategories():Observable<any>{
