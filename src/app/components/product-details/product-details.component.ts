@@ -1,21 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '.././../services/product.service';
-import { CartItem } from '../cart/cart-item.modeel';
 import { CartServiceService } from '../cart.service.service';
 import { ApiService } from 'src/app/services/api.service';
+
+
+export interface CartItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+  total: number;
+  extras?: any[];
+  sugarLevel?: string;
+  iceLevel?: string;
+  image?: string;
+  selectedOptions: { [key: string]: any };
+}
+
 
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.css']
 })
+
+
+
+
+
 export class ProductDetailsComponent implements OnInit {
   product: any;
   selectedOptions: { [key: string]: any } = {};
   newPrice: number = 0;
   oldPrice: number = 0;
-
   notificationMessage: string = '';
   showNotification: boolean = false;
   isError: boolean = false;
@@ -28,8 +46,10 @@ export class ProductDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const productId = +this.route.snapshot.paramMap.get('id')!;
-    this.getProductById(productId);
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.getProductById(+idParam);
+    }
   }
 
   getProductById(id: number) {
@@ -47,7 +67,6 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   toggleExtra(groupName: string, option: any) {
-
     if (this.selectedOptions[groupName]?.name === option.name) {
       delete this.selectedOptions[groupName];
     } else {
@@ -57,7 +76,6 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   calculateTotal() {
-
     const extrasCost = Object.values(this.selectedOptions).reduce((sum: number, opt: any) => {
       return sum + (opt.price || 0);
     }, 0);
@@ -69,7 +87,6 @@ export class ProductDetailsComponent implements OnInit {
     this.clicked = true;
     if (!this.product) return;
 
-
     const totalGroups = this.product.groups?.length || 0;
     const selectedGroupsCount = Object.keys(this.selectedOptions).length;
 
@@ -78,15 +95,16 @@ export class ProductDetailsComponent implements OnInit {
       return;
     }
 
-    const itemToAdd: CartItem = {
-      id: this.product.id,
-      name: this.product.nameEn,
-      price: this.oldPrice,
-      quantity: 1,
-      total: this.newPrice,
-      image: this.product.img,
-      selectedOptions: { ...this.selectedOptions }
-    };
+
+const itemToAdd: CartItem = {
+  id: this.product.id,
+  name: this.product.nameEn,
+  price: this.oldPrice,
+  quantity: 1,
+  total: this.newPrice,
+  image: this.product.img,
+  selectedOptions: { ...this.selectedOptions }
+};
 
     this.cartService.addToCart(itemToAdd);
     this.showFeedback('Product added to cart successfully ✅', false);
@@ -402,5 +420,5 @@ export class ProductDetailsComponent implements OnInit {
 //     this.totalPrice = this.basePrice + extrasCost;
 //   }
 
-}
+
 
