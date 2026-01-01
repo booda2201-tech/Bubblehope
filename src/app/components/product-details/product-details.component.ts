@@ -4,7 +4,6 @@ import { ProductService } from '.././../services/product.service';
 import { CartServiceService } from '../cart.service.service';
 import { ApiService } from 'src/app/services/api.service';
 
-
 export interface CartItem {
   id: number;
   name: string;
@@ -19,14 +18,11 @@ export interface CartItem {
   selectedOptions: { [key: string]: any };
 }
 
-
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
-  styleUrls: ['./product-details.component.css']
+  styleUrls: ['./product-details.component.css'],
 })
-
-
 export class ProductDetailsComponent implements OnInit {
   product: any;
   selectedOptions: { [key: string]: any } = {};
@@ -55,6 +51,8 @@ export class ProductDetailsComponent implements OnInit {
       next: (res: any) => {
         this.product = res;
 
+        console.log(res);
+
         this.oldPrice = res.price || 0;
         this.newPrice = res.price || 0;
       },
@@ -65,130 +63,135 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   toggleExtra(groupName: string, option: any) {
-
-  if (groupName.toLowerCase() === 'extras' || groupName.toLowerCase() === 'add-ons') {
-    if (!this.selectedOptions[groupName]) {
-          this.selectedOptions[groupName] = [];
-    }
-    const index = this.selectedOptions[groupName].findIndex((opt: any) => opt.id === option.id);
-    if (index > -1) {
-      this.selectedOptions[groupName].splice(index, 1);
-    } else {
-      this.selectedOptions[groupName].push(option);
-    }
-  } else {
-
-      if (this.selectedOptions[groupName]?.id === option.id) {
-        const group = this.product.groups.find((g: any) => g.name === groupName);
-        if (!group?.isRequired) {
-          delete this.selectedOptions[groupName];
+    if (
+      groupName.toLowerCase() === 'extras' ||
+      groupName.toLowerCase() === 'add-ons'
+    ) {
+      if (!this.selectedOptions[groupName]) {
+        this.selectedOptions[groupName] = [];
+      }
+      const index = this.selectedOptions[groupName].findIndex(
+        (opt: any) => opt.id === option.id
+      );
+      if (index > -1) {
+        this.selectedOptions[groupName].splice(index, 1);
+      } else {
+        this.selectedOptions[groupName].push(option);
       }
     } else {
-      this.selectedOptions[groupName] = option;
+      if (this.selectedOptions[groupName]?.id === option.id) {
+        const group = this.product.groups.find(
+          (g: any) => g.name === groupName
+        );
+        if (!group?.isRequired) {
+          delete this.selectedOptions[groupName];
+        }
+      } else {
+        this.selectedOptions[groupName] = option;
+      }
     }
+    this.calculateTotal();
   }
-  this.calculateTotal();
-}
 
-calculateTotal() {
-  let extrasCost = 0;
+  calculateTotal() {
+    let extrasCost = 0;
 
-  Object.values(this.selectedOptions).forEach((value: any) => {
-    if (Array.isArray(value)) {
-      extrasCost += value.reduce((sum, opt) => sum + (opt.price || 0), 0);
+    Object.values(this.selectedOptions).forEach((value: any) => {
+      if (Array.isArray(value)) {
+        extrasCost += value.reduce((sum, opt) => sum + (opt.price || 0), 0);
+      } else if (value && value.price) {
+        extrasCost += value.price;
+      }
+    });
 
-    } else if (value && value.price) {
-      extrasCost += value.price;
+    this.product.newPrice = this.product.oldPrice + extrasCost;
+  }
+
+  isOptionSelected(groupName: string, option: any): boolean {
+    const selected = this.selectedOptions[groupName];
+    if (!selected) return false;
+
+    if (Array.isArray(selected)) {
+      return selected.some((opt) => opt.id === option.id);
     }
-  });
-
-  this.product.newPrice = this.product.oldPrice + extrasCost;
-}
-
-isOptionSelected(groupName: string, option: any): boolean {
-  const selected = this.selectedOptions[groupName];
-  if (!selected) return false;
-
-  if (Array.isArray(selected)) {
-    return selected.some(opt => opt.id === option.id);
+    return selected.id === option.id;
   }
-  return selected.id === option.id;
-}
 
   addToCart(): void {
     this.clicked = true;
     if (!this.product) return;
 
+    const missingRequiredGroups = this.product.groups.filter((group: any) => {
+      return group.isRequired && !this.selectedOptions[group.name];
+    });
 
-  const missingRequiredGroups = this.product.groups.filter((group: any) => {
-    return group.isRequired && !this.selectedOptions[group.name];
-  });
+    if (missingRequiredGroups.length > 0) {
+      this.showFeedback(
+        `Required: Please select ${missingRequiredGroups[0].name} ⚠️`,
+        true
+      );
+      return;
+    }
 
-  if (missingRequiredGroups.length > 0) {
-    this.showFeedback(`Required: Please select ${missingRequiredGroups[0].name} ⚠️`, true);
-    return;
-  }
+    const selectedExtras: any[] = [];
+    Object.values(this.selectedOptions).forEach((val) => {
+      Array.isArray(val)
+        ? selectedExtras.push(...val)
+        : selectedExtras.push(val);
+    });
 
-  const selectedExtras: any[] = [];
-  Object.values(this.selectedOptions).forEach(val => {
-    Array.isArray(val) ? selectedExtras.push(...val) : selectedExtras.push(val);
-  });
-
-
-const itemToAdd: CartItem = {
-id: this.product.id,
-    name: this.product.name,
-    image: this.product.image || this.product.imageUrl,
-    price: this.product.newPrice,
-    oldPrice: this.oldPrice,
-    quantity: 1,
-    total: this.product.newPrice,
-    selectedOptions: this.selectedOptions
-};
+    const itemToAdd: CartItem = {
+      id: this.product.id,
+      name: this.product.name,
+      image: this.product.images[0] ,
+      price: this.product.newPrice,
+      oldPrice: this.oldPrice,
+      quantity: 1,
+      total: this.product.newPrice,
+      selectedOptions: this.selectedOptions,
+    };
 
     this.cartService.addToCart(itemToAdd);
     this.showFeedback('Product added to cart successfully ✅', false);
   }
 
-
   showFeedback(message: string, error: boolean) {
     this.notificationMessage = message;
     this.isError = error;
     this.showNotification = true;
-    setTimeout(() => this.showNotification = false, 2000);
+    setTimeout(() => (this.showNotification = false), 2000);
   }
 }
 
-  // addToCart(): void {
-  //   if (!this.product) return;
+// addToCart(): void {
+//   if (!this.product) return;
 
-  //   const selectedExtras = this.extras.filter(e => e.selected);
+//   const selectedExtras = this.extras.filter(e => e.selected);
 
-  //   const uniqueId = `${this.product.id}-${this.selectedSugar}-${this.selectedIce}-${selectedExtras.map(e => e.name).join(',')}`;
+//   const uniqueId = `${this.product.id}-${this.selectedSugar}-${this.selectedIce}-${selectedExtras.map(e => e.name).join(',')}`;
 
-  //   const itemToAdd: CartItem = {
-  //     // cartItemId: `${this.product.id}-${this.selectedSugar}-${this.selectedIce}`,
-  //     id: this.product.id,
-  //     name: this.product.nameEn,
-  //     price: this.basePrice,
-  //     quantity: 1,
-  //     total: this.totalPrice,
-  //     image: this.product.img,
-  //     extras: selectedExtras,
-  //     sugarLevel: this.selectedSugar || 'Normal',
-  //     iceLevel: this.selectedIce || '100%'
-  //   };
-  //   this.cartService.addToCart(itemToAdd);
+//   const itemToAdd: CartItem = {
+//     // cartItemId: `${this.product.id}-${this.selectedSugar}-${this.selectedIce}`,
+//     id: this.product.id,
+//     name: this.product.nameEn,
+//     price: this.basePrice,
+//     quantity: 1,
+//     total: this.totalPrice,
+//     image: this.product.img,
+//     extras: selectedExtras,
+//     sugarLevel: this.selectedSugar || 'Normal',
+//     iceLevel: this.selectedIce || '100%'
+//   };
+//   this.cartService.addToCart(itemToAdd);
 
+//   this.notificationMessage = 'Product added to cart successfully✅';
+//   this.showNotification = true;
 
-  //   this.notificationMessage = 'Product added to cart successfully✅';
-  //   this.showNotification = true;
-
-  //   setTimeout(() => {
-  //     this.showNotification = false;
-  //     this.notificationMessage = '';
-  //   }, 1200);
-  // }
+//   setTimeout(() => {
+//     this.showNotification = false;
+//     this.notificationMessage = '';
+//   }, 1200);
+// }
 
 // product: any;
 //   basePrice: number = 0;
@@ -252,11 +255,9 @@ id: this.product.id,
 //     this.totalPrice = this.basePrice + extrasCost;
 //   }
 
-
 // addToCart(): void {
 
 //   const selectedExtras = this.extras.filter(e => e.selected);
-
 
 //   const itemToAdd: CartItem = {
 //     id: this.product.id,
@@ -270,9 +271,7 @@ id: this.product.id,
 //     iceLevel: this.selectedIce || '100%'
 //   };
 
-
 //   this.cartService.addToCart(itemToAdd);
-
 
 //   this.notificationMessage = `✅ تمت إضافة "${this.product.name}" إلى سلة التسوق!`;
 //   this.showNotification = true;
@@ -282,7 +281,6 @@ id: this.product.id,
 //     this.notificationMessage = '';
 //   }, 1200);
 // }
-
 
 //   extras = [
 //     { name: 'cream cheese', price: 20, selected: false },
@@ -414,14 +412,11 @@ id: this.product.id,
 //     },
 //   ];
 
-
 // sugarLevels = ['Full Sugar', 'Less Sugar','Normal'];
 // iceLevels = ['100%', '50%','0%'];
 
 // selectedSugar = '';
 // selectedIce = '';
-
-
 
 //   ngOnInit() {
 //     // 1. الحصول على الـ ID والـ Category من الرابط
@@ -439,7 +434,6 @@ id: this.product.id,
 //       }
 //     }
 //   }
-
 
 // selectIce(level: string) {
 //   this.selectedIce = level;
@@ -459,6 +453,3 @@ id: this.product.id,
 //       .reduce((sum, current) => sum + current.price, 0);
 //     this.totalPrice = this.basePrice + extrasCost;
 //   }
-
-
-

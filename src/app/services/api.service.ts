@@ -16,7 +16,6 @@ export class ApiService {
   }
 
 
-
   getAllCategories():Observable<any>{
     return this.http.get(`${this.baseUrl}Categories/GetAllCategories?categoryGroupId=1`)
   }

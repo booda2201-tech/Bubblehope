@@ -58,8 +58,7 @@
   <div class="text-orange d-md-block d-none">
 <div class="cart-item py-3" *ngFor="let item of (items$ | async)">
   <div class="d-flex align-items-center text-start">
-    <img [src]="item.image" [alt]="item.name" class="product-img me-3"
-          onerror="this.src='assets/images/default-food.png'">
+    <img [src]="item.image" [alt]="item.name" class="product-img me-3">
         <div class="product-info">
           <span class="fs-5 fw-bold text-dark d-block">{{ item.name }}
           <p class="text-secondary fs-6 fw-normal mb-0">

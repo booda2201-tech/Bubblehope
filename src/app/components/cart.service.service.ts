@@ -7,6 +7,7 @@ import { CartItem } from '../components/cart/cart-item.modeel';
 })
 export class CartServiceService {
 
+  private cartItems: CartItem[] = [];
   private cartSubject = new BehaviorSubject<CartItem[]>([]);
 
 
@@ -35,6 +36,8 @@ export class CartServiceService {
 // }
 
 addToCart(newItem: CartItem): void {
+  console.log("item : => ",newItem);
+
   const currentItems = this.cartSubject.value;
 
   const existingItemIndex = currentItems.findIndex(item =>
