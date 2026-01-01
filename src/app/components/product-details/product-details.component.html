@@ -108,8 +108,11 @@
         <div>
 
 
-          <div class="option-group" *ngFor="let group of product.groups">
-            <h4>{{group.name}}
+          <div class="option-group"
+               *ngFor="let group of product.groups"
+                [class.error-border]="group.isRequired && clicked && !selectedOptions[group.name]">
+            <h4>
+              {{group.name}}
               <span class="required-dot text-danger" *ngIf="group.isRequired">*</span>
             </h4>
 
