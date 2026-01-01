@@ -77,7 +77,7 @@
 }
 
 .sidebar-item:hover {
-  background-color: #f8f9fa;
+  background-color: #ffe5ce;
 
 }
 .click {
@@ -153,7 +153,6 @@ li.sidebar-item {
   color: white !important;
 }
 
-
 .category-name:hover:not(.active-branch) {
-  background-color: #fff2e6;
+  background-color: #ffe5ce;
 }

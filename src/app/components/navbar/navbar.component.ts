@@ -19,6 +19,12 @@ constructor(
 
   ngOnInit(): void {
     this.loadBranches();
+
+    const savedBranchId = localStorage.getItem('selectedBranchId');
+  if (savedBranchId) {
+
+      this.selectedBranchId = +savedBranchId;
+    }
   }
 
   loadBranches() {
@@ -36,8 +42,9 @@ constructor(
   onBranchSelect(branch: any) {
 
   this.selectedBranchId = branch.id;
-
+  localStorage.setItem('selectedBranchId', branch.id.toString());
   this.isSidebarOpen = false;
+
   }
 
 onSearch(event: any) {
