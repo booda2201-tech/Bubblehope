@@ -64,26 +64,62 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   toggleExtra(groupName: string, option: any) {
-    const group = this.product.groups.find((g: any) => g.name === groupName);
 
+  if (groupName.toLowerCase() === 'extras' || groupName.toLowerCase() === 'add-ons') {
 
-  if (this.selectedOptions[groupName]?.id === option.id) {
-    if (!group?.isRequired) {
-      delete this.selectedOptions[groupName];
+    if (!this.selectedOptions[groupName]) {
+      this.selectedOptions[groupName] = [];
     }
+
+    const index = this.selectedOptions[groupName].findIndex((opt: any) => opt.id === option.id);
+
+    if (index > -1) {
+
+      this.selectedOptions[groupName].splice(index, 1);
+    } else {
+
+      this.selectedOptions[groupName].push(option);
+    }
+
   } else {
-    this.selectedOptions[groupName] = option;
+
+    if (this.selectedOptions[groupName]?.id === option.id) {
+      const group = this.product.groups.find((g: any) => g.name === groupName);
+      if (!group?.isRequired) {
+        delete this.selectedOptions[groupName];
+      }
+    } else {
+      this.selectedOptions[groupName] = option;
+    }
   }
 
   this.calculateTotal();
-  }
+}
 
 calculateTotal() {
-  const extrasCost = Object.values(this.selectedOptions).reduce((sum: number, opt: any) => {
-    return sum + (opt.price || 0);
-  }, 0);
+  let extrasCost = 0;
+
+  Object.values(this.selectedOptions).forEach((value: any) => {
+    if (Array.isArray(value)) {
+
+      extrasCost += value.reduce((sum, opt) => sum + (opt.price || 0), 0);
+    } else if (value && value.price) {
+
+      extrasCost += value.price;
+    }
+  });
 
   this.product.newPrice = this.product.oldPrice + extrasCost;
+}
+
+isOptionSelected(groupName: string, option: any): boolean {
+  const selected = this.selectedOptions[groupName];
+  if (!selected) return false;
+
+  if (Array.isArray(selected)) {
+    return selected.some(opt => opt.id === option.id);
+  }
+  return selected.id === option.id;
 }
 
   addToCart(): void {
