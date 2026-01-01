@@ -127,3 +127,24 @@ li.sidebar-item {
     }
 
 }
+
+
+.category-name {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #333;
+  border-radius: 12px;
+  margin-bottom: 5px;
+}
+
+
+.active-branch {
+  background-color: #f38221;
+  color: white !important;
+}
+
+
+.category-name:hover:not(.active-branch) {
+  background-color: #fff2e6;
+}

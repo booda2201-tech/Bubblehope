@@ -9,8 +9,9 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class NavbarComponent implements OnInit{
   branches: any[] = [];
-
-isSidebarOpen = false;
+  selectedBranchId: number | null = null;
+  isSidebarOpen = false;
+  isBranchesOpen: boolean = false;
 
 constructor(
   private apiService: ApiService,
@@ -34,7 +35,7 @@ constructor(
 
   onBranchSelect(branch: any) {
 
-  this.cartService.setSelectedBranch(branch);
+  this.selectedBranchId = branch.id;
 
   this.isSidebarOpen = false;
   }
@@ -45,7 +46,11 @@ onSearch(event: any) {
 }
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
+
   }
 
+  toggleBranches(){
+      this.isBranchesOpen = !this.isBranchesOpen;
+  }
 
 }
