@@ -119,7 +119,7 @@ isOptionSelected(groupName: string, option: any): boolean {
     if (!this.product) return;
 
 
-const missingRequiredGroups = this.product.groups.filter((group: any) => {
+  const missingRequiredGroups = this.product.groups.filter((group: any) => {
     return group.isRequired && !this.selectedOptions[group.name];
   });
 
