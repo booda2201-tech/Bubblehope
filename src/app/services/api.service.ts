@@ -11,12 +11,12 @@ export class ApiService {
 
   private baseUrl = 'https://alhendalcompany-001-site1.stempurl.com/api/';
   constructor(private http:HttpClient) { }
+  private selectedBranchSource = new BehaviorSubject<string | null>(localStorage.getItem('selectedBranchId'));
 
   getAllProductsByBranchAndCtegory(categoryId:number,branchId:number):Observable<any>{
     return this.http.get(`${this.baseUrl}Products/GetProductsByCategoryId/${categoryId}/branch/${branchId}`)
     // return this.http.get(`https://alhendalcompany-001-site1.stempurl.com/api/Products/GetProductsByCategoryId/1/branch/2`)
   }
-
 
   getAllCategories():Observable<any>{
     return this.http.get(`${this.baseUrl}Categories/GetAllCategories?categoryGroupId=1`)
@@ -31,6 +31,16 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}Branch/Switch`)
   }
 
+  selectedBranch$ = this.selectedBranchSource.asObservable();
+
+  changeBranch(branchId: string) {
+    localStorage.setItem('selectedBranchId', branchId);
+    this.selectedBranchSource.next(branchId);
+  }
+
+  getProductsByBranch(branchId: string) {
+    return this.http.get(`${this.baseUrl}Products/GetProductsByCategoryId/branch/${branchId}`);
+  }
 
 
 
