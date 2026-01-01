@@ -25,6 +25,9 @@ export class ApiService {
   GetAllBranches():Observable<any>{
     return this.http.get(`${this.baseUrl}Branch/GetAllBranches`)
   }
+  GetBranch():Observable<any>{
+    return this.http.get(`${this.baseUrl}Branch/Switch`)
+  }
 
 
 

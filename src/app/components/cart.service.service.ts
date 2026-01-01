@@ -95,6 +95,13 @@ get overallTotal$(): Observable<number> {
 }
 
 
+private selectedBranchSource = new BehaviorSubject<any>(null);
+currentBranch = this.selectedBranchSource.asObservable();
+
+setSelectedBranch(branch: any) {
+  this.selectedBranchSource.next(branch);
+}
+
 
 private searchTermSource = new BehaviorSubject<string>('');
 currentSearchTerm$ = this.searchTermSource.asObservable();

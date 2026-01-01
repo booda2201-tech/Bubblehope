@@ -16,34 +16,28 @@ constructor(
   private apiService: ApiService,
   private cartService: CartServiceService) {}
 
-  ngOnInit() {
-    // this.categories = this.productService.getCategories();
+  ngOnInit(): void {
+    this.loadBranches();
+  }
 
-    this.apiService.getAllCategories().subscribe({
-      next: (res: any) => {
-        this.categories = res;
-        // console.log(res);
+  loadBranches() {
+      this.apiService.GetAllBranches().subscribe({
+      next: (data) => {
+        this.branches = data;
       },
       error: (err) => {
-        // console.log(err);
-      },
+        console.error('Error fetching branches', err);
+      }
     });
-
-  // loadBranches() {
-  //     this.apiService.GetAllBranches().subscribe({
-  //     next: (data) => {
-  //       this.branches = data;
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching branches', err);
-  //     }
-  //   });
-  // }
+  }
 
 
+  onBranchSelect(branch: any) {
 
+  this.cartService.setSelectedBranch(branch);
 
-
+  this.isSidebarOpen = false;
+  }
 
 onSearch(event: any) {
   const value = event.target.value;

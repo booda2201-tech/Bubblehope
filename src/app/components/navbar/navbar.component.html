@@ -97,11 +97,11 @@
       <i class="bi float-start bi-chevron-left"></i>
     </li>
     <ul class="list-unstyled ps-4">
-      <li class="fs-6 fw-normal category-name">
-        <i class="bi bi-geo-alt-fill me-1"> </i> Hadayek Al-Ahram
-      </li>
-      <li class="fs-6 fw-normal category-name click">
-        <i class="bi bi-geo-alt-fill me-1"> </i> Waslet-Dahshour
+      <li *ngFor="let branch of branches"
+          class="fs-6 fw-normal category-name click"
+          (click)="onBranchSelect(branch)">
+        <i class="bi bi-geo-alt-fill me-1"></i>
+        {{ branch.name }}
       </li>
     </ul>
   </ul>
