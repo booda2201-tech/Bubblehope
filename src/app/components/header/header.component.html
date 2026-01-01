@@ -9,17 +9,17 @@
 </div>
 
 <div class="row g-4 mb-5">
-  <div class="col-6 col-sm-6 col-md-4 col-lg-3 px-2 mb-3" *ngFor="let productlist of products">
-    <div [routerLink]="['/product-details', productlist.id]"
+  <div class="col-6 col-sm-6 col-md-4 col-lg-3 px-2 mb-3" *ngFor="let product of products">
+    <div [routerLink]="['/product-details', product.id]"
           [queryParams]="{ category: selectedCategory }"
         class="card bg-white p-2 h-100 d-flex flex-column justify-content-between shadow-sm rounded-4">
       <div class="text-center card-img">
-          <img [src]="productlist.imagePath" class="card-img-top mx-auto w-50" alt="">
+          <img [src]="product.imagePath" class="card-img-top mx-auto w-50" alt="">
       </div>
-        <h6 class="card-title fs-6 mt-2 mb-0 text-center">{{ productlist.name }}</h6>
+        <h6 class="card-title fs-6 mt-2 mb-0 text-center">{{ product.name }}</h6>
         <div class="d-flex justify-content-around align-items-center mb-2 border-top pt-3">
           <div class=" text-center">
-            <p class="card-text text-dark fw-bold">{{ productlist.price }} LE</p>
+            <p class="card-text text-dark fw-bold">{{ product.price }} LE</p>
         </div>
       </div>
     </div>

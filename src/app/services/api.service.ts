@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
 
 
 @Injectable({
@@ -11,7 +12,6 @@ export class ApiService {
 
   private baseUrl = 'https://alhendalcompany-001-site1.stempurl.com/api/';
   constructor(private http:HttpClient) { }
-  private selectedBranchSource = new BehaviorSubject<string | null>(localStorage.getItem('selectedBranchId'));
 
   getAllProductsByBranchAndCtegory(categoryId:number,branchId:number):Observable<any>{
     return this.http.get(`${this.baseUrl}Products/GetProductsByCategoryId/${categoryId}/branch/${branchId}`)
@@ -30,20 +30,6 @@ export class ApiService {
   GetBranch():Observable<any>{
     return this.http.get(`${this.baseUrl}Branch/Switch`)
   }
-
-  selectedBranch$ = this.selectedBranchSource.asObservable();
-
-  changeBranch(branchId: string) {
-    localStorage.setItem('selectedBranchId', branchId);
-    this.selectedBranchSource.next(branchId);
-  }
-
-  getProductsByBranch(branchId: string) {
-    return this.http.get(`${this.baseUrl}Products/GetProductsByCategoryId/branch/${branchId}`);
-  }
-
-
-
 
 
 }

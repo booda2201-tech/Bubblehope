@@ -42,7 +42,7 @@ constructor(
   onBranchSelect(branch: any) {
 
   this.selectedBranchId = branch.id;
-  this.apiService.changeBranch(branch.id.toString());
+  localStorage.setItem('selectedBranchId', branch.id.toString());
   this.isSidebarOpen = false;
 
   }

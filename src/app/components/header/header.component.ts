@@ -23,6 +23,7 @@ export class HeaderComponent implements OnInit {
   selectedCategory: string = '';
   message: string = '';
   currentLang: string = 'en';
+  branchId!: number ;
 
   constructor(
     private productService: ProductService,
@@ -31,6 +32,7 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.branchId = Number(localStorage.getItem('selectedBranchId')) ;
     // this.categories = this.productService.getCategories();
 
     this.apiService.getAllCategories().subscribe({
@@ -60,7 +62,17 @@ export class HeaderComponent implements OnInit {
     this.cartService.currentSearchTerm$.subscribe((term: string) => {
       this.filterProducts(term);
     });
+
+
+
+
+
+
+
+    
   }
+
+
 
   selectCategory(categoryId: number) {
     // this.selectedCategory = category;
@@ -72,7 +84,7 @@ export class HeaderComponent implements OnInit {
   getProductsByCategoryId(categoryId: number) {
     console.log(categoryId);
 
-    this.apiService.getAllProductsByBranchAndCtegory(categoryId, 2).subscribe({
+    this.apiService.getAllProductsByBranchAndCtegory(categoryId, this.branchId).subscribe({
       next: (res: any) => {
         this.allProductsInCategory = res;
         this.products = [...this.allProductsInCategory];
