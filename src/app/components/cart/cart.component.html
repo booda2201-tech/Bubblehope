@@ -64,9 +64,11 @@
               >
         <div class="product-info">
           <span class="fs-5 fw-bold text-dark d-block">{{ item.name }}
-            <p class="text-secondary fs-6 fw-normal mb-0">
-            {{ item.sugarLevel }}, {{ item.iceLevel }}
-            </p>
+          <p class="text-secondary fs-6 fw-normal mb-0">
+              <span *ngFor="let option of item.selectedOptions | keyvalue; let last = last">
+                {{ formatOptionValue(option.value) }}{{ !last ? ' , ' : '' }}
+            </span>
+          </p>
           </span>
         </div>
       </div>

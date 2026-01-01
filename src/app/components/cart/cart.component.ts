@@ -40,6 +40,14 @@ incrementQuantity(item: CartItem): void {
   this.cartService.updateItemQuantity(item);
 }
 
+formatOptionValue(value: any): string {
+  if (Array.isArray(value)) {
+    // إذا كانت إضافات متعددة نجمع أسمائها بفاصلة
+    return value.map(opt => opt.name).join(' + ');
+  }
+  // إذا كان خيار واحد (مثل الحجم) نرجع الاسم مباشرة
+  return value.name || value;
+}
 
 decrementQuantity(item: CartItem): void {
   if (item.quantity > 1) {
