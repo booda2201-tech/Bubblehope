@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CartServiceService } from '../cart.service.service';
 import { ApiService } from 'src/app/services/api.service';
+import { BranchService } from 'src/app/services/branch.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +16,9 @@ export class NavbarComponent implements OnInit{
 
 constructor(
   private apiService: ApiService,
-  private cartService: CartServiceService) {}
+  private cartService: CartServiceService,
+  private branchService: BranchService
+) {}
 
   ngOnInit(): void {
     this.loadBranches();
@@ -39,13 +42,14 @@ constructor(
   }
 
 
-  onBranchSelect(branch: any) {
-
+onBranchSelect(branch: any) {
   this.selectedBranchId = branch.id;
-  localStorage.setItem('selectedBranchId', branch.id.toString());
-  this.isSidebarOpen = false;
 
-  }
+  this.branchService.updateBranchId(branch.id);
+
+  this.isSidebarOpen = false;
+  this.isBranchesOpen = false;
+}
 
 onSearch(event: any) {
   const value = event.target.value;
