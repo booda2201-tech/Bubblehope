@@ -64,12 +64,18 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   toggleExtra(groupName: string, option: any) {
-  if (this.selectedOptions[groupName]?.id === option.id) {
+    const group = this.product.groups.find((g: any) => g.name === groupName);
 
+
+  if (this.selectedOptions[groupName]?.id === option.id) {
+    if (!group?.isRequired) {
+      delete this.selectedOptions[groupName];
+    }
   } else {
     this.selectedOptions[groupName] = option;
   }
-    this.calculateTotal();
+
+  this.calculateTotal();
   }
 
 calculateTotal() {
@@ -77,8 +83,7 @@ calculateTotal() {
     return sum + (opt.price || 0);
   }, 0);
 
-  this.product.price = this.oldPrice;
-  this.newPrice = this.oldPrice + extrasCost;
+  this.product.newPrice = this.product.oldPrice + extrasCost;
 }
 
   addToCart(): void {
@@ -86,13 +91,19 @@ calculateTotal() {
     if (!this.product) return;
 
 
-    const totalGroups = this.product.groups?.length || 0;
-    const selectedGroupsCount = Object.keys(this.selectedOptions).length;
+const missingRequiredGroups = this.product.groups.filter((group: any) => {
+    return group.isRequired && !this.selectedOptions[group.name];
+  });
 
-    if (selectedGroupsCount < totalGroups) {
-      this.showFeedback('Please complete all selections! ⚠️', true);
-      return;
-    }
+  if (missingRequiredGroups.length > 0) {
+    this.showFeedback(`Required: Please select ${missingRequiredGroups[0].name} ⚠️`, true);
+    return;
+  }
+
+    // if (selectedGroupsCount < totalGroups) {
+    //   this.showFeedback('Please complete all selections! ⚠️', true);
+    //   return;
+    // }
 
 
 const itemToAdd: CartItem = {
