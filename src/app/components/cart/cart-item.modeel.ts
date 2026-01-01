@@ -8,6 +8,7 @@ id: number;
   sugarLevel?: string;
   iceLevel?: string;
   image?: string;
+  selectedOptions: { [key: string]: any };
   constructor(id: number, name: string, price: number, quantity: number, total: number) {
     this.id = id;
     this.name = name;

@@ -12,133 +12,93 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class ProductDetailsComponent implements OnInit {
   product: any;
-  categoryName: string = '';
+  selectedOptions: { [key: string]: any } = {};
   newPrice: number = 0;
   oldPrice: number = 0;
 
-
   notificationMessage: string = '';
   showNotification: boolean = false;
-
-  extras = [
-    { name: 'cream cheese', price: 20, selected: false },
-    { name: 'cream cheese', price: 20, selected: false },
-    { name: 'Extra syrup', price: 10, selected: false },
-    { name: 'Extra syrup', price: 10, selected: false },
-    { name: 'plain tapioca pearls', price: 15, selected: false },
-    { name: 'plain tapioca pearls', price: 15, selected: false }
-  ];
-
-  sugarLevels = ['Full Sugar', 'Less Sugar', 'Normal'];
-  iceLevels = ['100%', '50%', '0%'];
-
-  selectedSugar = '';
-  selectedIce = '';
+  isError: boolean = false;
   clicked = false;
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService,
-    private cartService: CartServiceService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private cartService: CartServiceService
   ) {}
 
   ngOnInit() {
     const productId = +this.route.snapshot.paramMap.get('id')!;
-    // const categoryName = this.route.snapshot.queryParamMap.get('category')!;
-
-    // this.categoryName = categoryName;
-
-    // this.product = this.productService.getProduct(this.categoryName, productId);
-
     this.getProductById(productId);
-
-    if (this.product) {
-      this.newPrice = this.product.price;
-      this.oldPrice = this.product.oldPrice;
-    }
-    else {
-      console.error('Product not found !');
-    }
-
   }
 
-  getProductById(id:number){
+  getProductById(id: number) {
     this.apiService.GetProductById(id, 2).subscribe({
       next: (res: any) => {
-        console.log(res);
-
         this.product = res;
 
+        this.oldPrice = res.price || 0;
+        this.newPrice = res.price || 0;
       },
       error: (err) => {
-        console.log(err);
+        console.error('Error fetching product:', err);
       },
-    })
+    });
   }
 
-  selectIce(level: string) {
-    this.selectedIce = level;
-  }
+  toggleExtra(groupName: string, option: any) {
 
-  selectSugar(level: string) {
-    this.selectedSugar = level;
-  }
-
-  toggleExtra(index: number) {
-    this.extras[index].selected = !this.extras[index].selected;
+    if (this.selectedOptions[groupName]?.name === option.name) {
+      delete this.selectedOptions[groupName];
+    } else {
+      this.selectedOptions[groupName] = option;
+    }
     this.calculateTotal();
   }
 
   calculateTotal() {
-    const extrasCost = this.extras
-      .filter(e => e.selected)
-      .reduce((sum, current) => sum + current.price, 0);
+
+    const extrasCost = Object.values(this.selectedOptions).reduce((sum: number, opt: any) => {
+      return sum + (opt.price || 0);
+    }, 0);
 
     this.newPrice = this.oldPrice + extrasCost;
   }
 
-  isError: boolean = false;
-
-addToCart(): void {
-  this.clicked = true;
-  if (!this.product) return;
+  addToCart(): void {
+    this.clicked = true;
+    if (!this.product) return;
 
 
-  if (!this.selectedSugar || !this.selectedIce) {
-    this.notificationMessage = 'Please select Sugar level and Ice level first! ⚠️';
-    this.isError = true;
-    this.showNotification = true;
+    const totalGroups = this.product.groups?.length || 0;
+    const selectedGroupsCount = Object.keys(this.selectedOptions).length;
 
-    setTimeout(() => {
-      this.showNotification = false;
-    }, 2000);
+    if (selectedGroupsCount < totalGroups) {
+      this.showFeedback('Please complete all selections! ⚠️', true);
+      return;
+    }
 
-    return;
+    const itemToAdd: CartItem = {
+      id: this.product.id,
+      name: this.product.nameEn,
+      price: this.oldPrice,
+      quantity: 1,
+      total: this.newPrice,
+      image: this.product.img,
+      selectedOptions: { ...this.selectedOptions }
+    };
+
+    this.cartService.addToCart(itemToAdd);
+    this.showFeedback('Product added to cart successfully ✅', false);
   }
 
-  const selectedExtras = this.extras.filter(e => e.selected);
 
-  const itemToAdd: CartItem = {
-    id: this.product.id,
-    name: this.product.nameEn,
-    price: this.oldPrice,
-    quantity: 1,
-    total: this.newPrice,
-    image: this.product.img,
-    extras: selectedExtras,
-    sugarLevel: this.selectedSugar,
-    iceLevel: this.selectedIce
-  };
-
-
-  this.cartService.addToCart(itemToAdd);
-
-  this.notificationMessage = 'Product added to cart successfully ✅';
-  this.isError = false;
-  this.showNotification = true;
-
-  setTimeout(() => { this.showNotification = false; }, 1200);
+  showFeedback(message: string, error: boolean) {
+    this.notificationMessage = message;
+    this.isError = error;
+    this.showNotification = true;
+    setTimeout(() => this.showNotification = false, 2000);
+  }
 }
 
   // addToCart(): void {
