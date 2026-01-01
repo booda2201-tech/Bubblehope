@@ -56,12 +56,10 @@
   </div>
   <div class="scroll">
   <div class="text-orange d-md-block d-none">
-    <div *ngFor="let item of (items$ | async)" class="cart-item py-3">
-      <div class="d-flex align-items-center text-start">
-        <img [src]="item.image"
-              [alt]="item.name"
-              class="product-img me-3"
-              >
+<div class="cart-item py-3" *ngFor="let item of (items$ | async)">
+  <div class="d-flex align-items-center text-start">
+    <img [src]="item.image" [alt]="item.name" class="product-img me-3"
+          onerror="this.src='assets/images/default-food.png'">
         <div class="product-info">
           <span class="fs-5 fw-bold text-dark d-block">{{ item.name }}
           <p class="text-secondary fs-6 fw-normal mb-0">
@@ -93,35 +91,40 @@
   </div>
 
 <div class="texet-orange d-block d-md-none">
-  <div class="row cart-item-sm py-2 ng-star-inserted" *ngFor="let item of (items$ | async)">
-    <div class="col-4 d-flex justify-content-center align-items-center">
-      <img class="product-img px-1 w-100"
-            [src]="item.image"
-            [alt]="item.name">
-    </div>
-    <div class="col-8 d-flex flex-column justify-content-between">
-      <div class="d-flex justify-content-between align-items-start">
-        <div class="product-name fs-5 mt-2 fw-normal">
-          <span >{{ item.name }}</span>
-          <p class="text-secondary fs-6 fw-normal"> {{ item.sugarLevel }}, {{ item.iceLevel }}</p>
-        </div>
-        <span class="remove-btn" (click)="removeItem(item)" style="cursor: pointer;">
-          <i class="fa-solid fa-circle-xmark text-orange fs-4"></i>
-        </span>
+  <div class="row cart-item-sm py-2" *ngFor="let item of (items$ | async)">
+  <div class="col-4 d-flex justify-content-center align-items-center">
+    <img class="product-img px-1 w-100" [src]="item.image" [alt]="item.name">
+  </div>
+  <div class="col-8 d-flex flex-column justify-content-between">
+    <div class="d-flex justify-content-between align-items-start">
+      <div class="product-name fs-5 mt-2 fw-normal">
+        <span>{{ item.name }}</span>
+        <p class="text-secondary fs-7 fw-normal mb-0">
+          <span *ngFor="let opt of item.selectedOptions | keyvalue; let last = last">
+            {{ formatOptionValue(opt.value) }}{{ !last ? ' , ' : '' }}
+          </span>
+        </p>
       </div>
+      <span class="remove-btn" (click)="removeItem(item)">
+        <i class="fa-solid fa-circle-xmark text-orange fs-4"></i>
+      </span>
+    </div>
 
-      <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex justify-content-between align-items-center">
       <div class="quantity-control">
         <button (click)="decrementQuantity(item)" class="btn text-orange fs-4 p-0">-</button>
         <span class="fs-4 text-dark fw-bold">{{ item.quantity }}</span>
         <button (click)="incrementQuantity(item)" class="btn text-orange fs-4 p-0">+</button>
       </div>
-      <div class="fs-5 text-dark">
-        {{ item.price | number:'1.0-0' }} LE
-      </div>
+      <div class="text-end">
+        <div *ngIf="item.price > item.price" class="text-decoration-line-through text-muted small">
+          {{ item.price }} LE
+        </div>
+        <div class="fs-5 text-dark fw-bold">{{ item.total | number:'1.0-0'}} LE</div>
       </div>
     </div>
   </div>
+</div>
   </div>
 
   <div class="ms-auto checkout p-2 mt-4" style="max-width: 400px;">

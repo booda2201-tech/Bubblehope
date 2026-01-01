@@ -15,6 +15,7 @@ export interface CartItem {
   sugarLevel?: string;
   iceLevel?: string;
   image?: string;
+  oldPrice?: number;
   selectedOptions: { [key: string]: any };
 }
 
@@ -58,7 +59,7 @@ export class ProductDetailsComponent implements OnInit {
         this.newPrice = res.price || 0;
       },
       error: (err) => {
-        console.error('Error fetching product:', err);
+        // console.error('Error fetching product:', err);
       },
     });
   }
@@ -135,13 +136,14 @@ isOptionSelected(groupName: string, option: any): boolean {
 
 
 const itemToAdd: CartItem = {
-  id: this.product.id,
-  name: this.product.nameEn,
-  price: this.oldPrice,
-  quantity: 1,
-  total: this.newPrice,
-  image: this.product.img,
-  selectedOptions: { ...this.selectedOptions }
+id: this.product.id,
+    name: this.product.name,
+    image: this.product.image || this.product.imageUrl,
+    price: this.product.newPrice,
+    oldPrice: this.oldPrice,
+    quantity: 1,
+    total: this.product.newPrice,
+    selectedOptions: this.selectedOptions
 };
 
     this.cartService.addToCart(itemToAdd);

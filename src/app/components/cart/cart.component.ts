@@ -42,11 +42,9 @@ incrementQuantity(item: CartItem): void {
 
 formatOptionValue(value: any): string {
   if (Array.isArray(value)) {
-    // إذا كانت إضافات متعددة نجمع أسمائها بفاصلة
     return value.map(opt => opt.name).join(' + ');
   }
-  // إذا كان خيار واحد (مثل الحجم) نرجع الاسم مباشرة
-  return value.name || value;
+  return value.name || '';
 }
 
 decrementQuantity(item: CartItem): void {

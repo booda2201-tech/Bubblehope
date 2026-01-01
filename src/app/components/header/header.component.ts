@@ -36,10 +36,10 @@ export class HeaderComponent implements OnInit {
     this.apiService.getAllCategories().subscribe({
       next: (res: any) => {
         this.categories = res;
-        console.log(res);
+        // console.log(res);
       },
       error: (err) => {
-        console.log(err);
+        // console.log(err);
       },
     });
 
@@ -79,10 +79,10 @@ export class HeaderComponent implements OnInit {
         this.products = res;
         this.message = this.products.length === 0 ? 'No products found' : '';
 
-        console.log(res);
+        // console.log(res);
       },
       error: (err) => {
-        console.log(err);
+        // console.log(err);
         this.message = this.products.length === 0 ? 'No products found' : '';
       },
     });
