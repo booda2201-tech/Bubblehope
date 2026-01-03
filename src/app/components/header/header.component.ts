@@ -11,6 +11,9 @@ interface category {
   name: string;
   name_ar: string;
   imageUrl: string;
+  oldPrice?: number;
+  newPrice?: number;
+  price?: number;
   products: any[];
   categoryGroupId: number;
 }
