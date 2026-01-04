@@ -14,7 +14,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class ConfirmorderComponent implements OnInit{
 
 
-orderForm: FormGroup = new FormGroup({
+    orderForm: FormGroup = new FormGroup({
     fullName: new FormControl('', [Validators.required]),
     paymentMethodId: new FormControl('0: 1', [Validators.required]),
     code: new FormControl('')
