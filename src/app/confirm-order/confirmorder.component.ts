@@ -21,7 +21,6 @@ export class ConfirmorderComponent implements OnInit{
   });
 
     onSubmit() {
-    // Handle form submission here
     console.log(this.orderForm.value);
   }
 
